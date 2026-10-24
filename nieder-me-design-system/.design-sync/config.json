@@ -1,0 +1,118 @@
+{
+  "projectId": "ed6d8d2f-125b-4866-b856-f38510657509",
+  "shape": "package",
+  "pkg": "nieder-me-design-system",
+  "globalName": "NiederMe",
+  "offScript": "css-only: built by ../.design-sync/build-nieder-me.mjs, not package-build.mjs",
+  "siteRepo": "~/~Repos/nieder.me",
+  "stylesheets": [
+    "assets/css/work-case-study.css",
+    "assets/css/styleguide.css"
+  ],
+  "shipFonts": true,
+  "cards": [
+    {
+      "name": "PageHeader",
+      "group": "Patterns",
+      "height": 287,
+      "source": {
+        "class": "work-index-header"
+      },
+      "subtitle": "Two-line display title over a rule",
+      "summary": "The subpage title: a hairline rule, then a two-line display heading with the second line in the accent red."
+    },
+    {
+      "name": "Principles",
+      "group": "Foundations",
+      "height": 396,
+      "source": {
+        "id": "principles"
+      },
+      "subtitle": "Editorial first, structure visible, accent with restraint, warm precision",
+      "summary": "The four principles as a numbered specimen section: index, title, and a grid of short articles."
+    },
+    {
+      "name": "Typography",
+      "group": "Foundations",
+      "height": 1236,
+      "source": {
+        "id": "typography"
+      },
+      "subtitle": "Söhne scale from mega numeral to microcopy",
+      "summary": "Type does most of the personality work. Scale changes can be bold, but weight, spacing, and line length stay disciplined."
+    },
+    {
+      "name": "Links",
+      "group": "Actions",
+      "height": 501,
+      "source": {
+        "id": "actions"
+      },
+      "subtitle": "Inline, arrow and button links",
+      "summary": "Links do most of the work. Buttons are used sparingly, when an action deserves emphasis."
+    },
+    {
+      "name": "Color",
+      "group": "Foundations",
+      "height": 1338,
+      "source": {
+        "id": "color"
+      },
+      "subtitle": "Roles first, dark then light",
+      "summary": "Color is assigned a job before it's assigned a value. Dark mode first; light mode is an alternate reading environment, not a separate design."
+    },
+    {
+      "name": "Grid",
+      "group": "Foundations",
+      "height": 596,
+      "source": {
+        "id": "grid"
+      },
+      "subtitle": "12 columns, 40px gutters, 1268px max",
+      "summary": "The grid keeps the left rail, reading column, and wider editorial blocks in deliberate relation to each other."
+    },
+    {
+      "name": "Spacing",
+      "group": "Foundations",
+      "height": 457,
+      "source": {
+        "id": "spacing"
+      },
+      "subtitle": "8 to 72px steps, 40px rhythm",
+      "summary": "Spacing is generous by default: strong vertical breaks and clean internal grouping."
+    },
+    {
+      "name": "Patterns",
+      "group": "Patterns",
+      "height": 1305,
+      "source": {
+        "id": "patterns"
+      },
+      "subtitle": "Rails, breakpoints, surfaces, measure",
+      "summary": "Repeated patterns carry navigation, hierarchy, and state without adding extra explanation."
+    },
+    {
+      "name": "Tokens",
+      "group": "Foundations",
+      "height": 404,
+      "source": {
+        "id": "tokens"
+      },
+      "subtitle": "Docs and machine-readable tokens",
+      "summary": "The same system, exported for humans and machines: the spec and the W3C design tokens file."
+    },
+    {
+      "name": "SiteFooter",
+      "group": "Patterns",
+      "height": 330,
+      "source": {
+        "tag": "footer",
+        "class": "site-footer"
+      },
+      "subtitle": "Name, social icons, site and case-study links",
+      "summary": "The site footer: name and role, social icon links, utility links, and columns of site and case-study links.",
+      "previewCss": ".site-footer { margin-top: 0; }"
+    }
+  ],
+  "readmeHeader": ".design-sync/conventions.md"
+}

@@ -1,0 +1,14 @@
+{
+  "projectId": "d5c84a77-9e77-41cf-8ee6-7a0e3571b340",
+  "shape": "package",
+  "pkg": "aiquota-website-design-system",
+  "globalName": "AIQuotaWebsite",
+  "offScript": "css-only: built by ../.design-sync/build-css-ds.mjs, not package-build.mjs",
+  "groups": {
+    "Cover": "Brand"
+  },
+  "summaries": {
+    "Cover": "The system's cover card: the name over the wash with sample service cards, for the project's thumbnail. Not a component to reuse in designs."
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

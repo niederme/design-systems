@@ -1,1 +1,12 @@
 .DS_Store
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+# Licensed fonts (Söhne) must never be committed: this repo is public
+*.woff2
+*.woff
+*.otf
+*.ttf
+*.eot
