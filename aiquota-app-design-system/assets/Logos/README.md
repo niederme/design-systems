@@ -1,0 +1,1 @@
+The AIQuota app icon at 264px, copied from the iOS onboarding image set. `aiquota-app-icon-light.png` on light grounds, `aiquota-app-icon-dark.png` on dark grounds. Round its corners at 22.5% of its size when shown outside the system (onboarding, About). `aiquota-mark-on-dark.svg` is the icon's arcs and spark without the tile, shared with the site, for dark grounds only.

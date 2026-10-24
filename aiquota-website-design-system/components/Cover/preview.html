@@ -1,0 +1,37 @@
+<!-- @dsCard height=300 -->
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+<meta charset="utf-8">
+<title>AIQuota</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--canvas); color:var(--ink); font-family:var(--font-sans); overflow:hidden; }
+  /* derivation
+     ground   HeroWash: the iOS overview background (wash at 72% dark / 18% light, accent light from the top-right)
+     shapes   two glass ServiceCards stacked as in the iOS overview, real QuotaDials at 124px; the front one at the limit, as on John's screens
+     colour   accent rings and accent-ink readings; critical only where a reading is at the limit
+     words    the name in display-1's weight and tracking at 88px, the tagline in ink-2 */
+  .aq-wash { position:relative; width:960px; height:300px; }
+  .aq-card { position:absolute; padding:var(--space-4) var(--space-5); gap:0; }
+  .aq-card .aq-card__top { gap:var(--space-5); }
+  .aq-card__name { font-size:22px; line-height:28px; }
+  .aq-card__plan, .aq-card__reset, .aq-card__meta { font-size:15px; line-height:20px; }
+  .back { left:520px; top:20px; width:400px; }
+  .front { left:560px; top:150px; width:380px; box-shadow: inset 0 0 0 1px var(--glass-edge), var(--shadow-float); }
+  .words { position:absolute; left:var(--space-12); bottom:var(--space-12); max-width:440px; }
+  .name { margin:0; font-size:88px; line-height:.95; font-weight:700; letter-spacing:-.03em; color:var(--ink); }
+  .tag { margin:var(--space-3) 0 0 4px; font-size:15px; line-height:20px; color:var(--ink-2); }
+</style>
+</head>
+<body class="aq-root">
+<div class="aq-wash">
+<div aria-hidden="true">
+<article class="aq-card aq-glass back"><div class="aq-card__top"><div class="aq-dial aq-dial--single" role="img" aria-label="66% of Monthly used"><svg viewBox="0 0 124 124" aria-hidden="true"><circle class="aq-dial__track" cx="62.0" cy="62.0" r="56.0" pathLength="100" stroke-dasharray="75 100" transform="rotate(135 62.0 62.0)"/><circle class="aq-dial__fill" cx="62.0" cy="62.0" r="56.0" pathLength="100" stroke-dasharray="49.50 100" transform="rotate(135 62.0 62.0)"/></svg><div class="aq-dial__values" aria-hidden="true"><span>66%</span><span class="is-label">Monthly</span></div></div><div class="aq-card__body"><h3 class="aq-card__name">Claude</h3><p class="aq-card__plan">Enterprise plan</p><p class="aq-card__meta">$65.57 of $100.00</p></div></div></article>
+<article class="aq-card aq-glass front"><div class="aq-card__top"><div class="aq-dial aq-dial--critical" role="img" aria-label="100% of 5h used, 13% of 7d used"><svg viewBox="0 0 124 124" aria-hidden="true"><circle class="aq-dial__track" cx="62.0" cy="62.0" r="58.0" pathLength="100" stroke-dasharray="75 100" transform="rotate(135 62.0 62.0)"/><circle class="aq-dial__track" cx="62.0" cy="62.0" r="48.0" pathLength="100" stroke-dasharray="75 100" transform="rotate(135 62.0 62.0)"/><circle class="aq-dial__fill" cx="62.0" cy="62.0" r="58.0" pathLength="100" stroke-dasharray="75.00 100" transform="rotate(135 62.0 62.0)"/><circle class="aq-dial__fill aq-dial__fill--secondary" cx="62.0" cy="62.0" r="48.0" pathLength="100" stroke-dasharray="9.75 100" transform="rotate(135 62.0 62.0)"/></svg><div class="aq-dial__values" aria-hidden="true"><span>100% 5h</span><span class="is-secondary">13% 7d</span></div></div><div class="aq-card__body"><h3 class="aq-card__name">Codex</h3><p class="aq-card__plan">Pro plan</p><p class="aq-card__reset">Resets Thu at 12:00 PM</p></div></div></article>
+</div>
+<div class="words"><h1 class="name">AIQuota</h1><p class="tag">Know before you hit the limit.</p></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* AIQuota site components, round 3: matched to the shipping Mac and iOS apps.
+   Dark is the first theme. Every colour comes from tokens.css. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap");
+.aq-root, .aq-root * { box-sizing: border-box; }
+body { font-family: var(--font-sans); color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased; }
+
+/* Theme switches that tokens cannot carry: dark is the default, light overrides. */
+:root { --aq-blur: var(--glass-blur-dark); --wash-top: .72; --wash-mid: .12; --wash-glow: .35; }
+[data-theme="light"] { --aq-blur: var(--glass-blur); --wash-top: .18; --wash-mid: .05; --wash-glow: .12; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --aq-blur: var(--glass-blur); --wash-top: .18; --wash-mid: .05; --wash-glow: .12; } }
+
+/* Glass: Liquid Glass on the web. */
+.aq-glass { background: var(--glass); -webkit-backdrop-filter: var(--aq-blur); backdrop-filter: var(--aq-blur); box-shadow: inset 0 0 0 1px var(--glass-edge); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .aq-glass { background: var(--surface-2); } }
+@media (prefers-reduced-transparency: reduce) { .aq-glass { background: var(--surface-2); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+
+/* Button */
+.aq-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: 44px; padding: 0 var(--space-6); border: 0; border-radius: var(--radius-pill); font: 600 15px/20px var(--font-sans); letter-spacing: -0.005em; text-decoration: none; cursor: pointer; transition: transform .12s ease, filter .12s ease; }
+.aq-btn:active { transform: scale(.97); }
+.aq-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.aq-btn--primary { background: var(--brand); color: var(--on-brand); box-shadow: inset 0 1px 0 rgb(from var(--on-brand) r g b / .28), inset 0 0 0 1px rgb(from var(--on-brand) r g b / .12); }
+.aq-btn--primary:hover { filter: brightness(1.08); }
+.aq-btn--secondary { color: var(--ink); }
+.aq-btn--plain { background: transparent; color: var(--accent-ink); padding: 0 var(--space-3); }
+.aq-btn--plain:hover { text-decoration: underline; text-underline-offset: 3px; }
+.aq-btn--lg { min-height: 52px; padding: 0 var(--space-8); font-size: 17px; }
+.aq-btn[disabled] { background: var(--surface-2); color: var(--ink-3); box-shadow: none; cursor: default; filter: none; transform: none; }
+.aq-btn svg { width: 18px; height: 18px; fill: currentColor; }
+.aq-icongroup { display: inline-flex; gap: var(--space-1); padding: var(--space-1); border-radius: var(--radius-pill); }
+.aq-icongroup button { width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+.aq-icongroup svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Nav bar */
+.aq-nav { display: flex; align-items: center; gap: var(--space-6); height: 56px; padding: 0 var(--space-2) 0 var(--space-4); border-radius: var(--radius-pill); }
+.aq-nav--raised { box-shadow: inset 0 0 0 1px var(--glass-edge), var(--shadow-float); }
+.aq-nav__brand { display: flex; align-items: center; gap: var(--space-2); font: 600 17px/22px var(--font-sans); color: var(--ink); text-decoration: none; }
+.aq-nav__brand img { width: 28px; height: 28px; border-radius: 7px; }
+.aq-nav__links { display: flex; gap: var(--space-1); margin-left: auto; }
+.aq-nav__link { padding: 0 var(--space-3); border-radius: var(--radius-pill); font: 400 15px/36px var(--font-sans); color: var(--ink-2); text-decoration: none; }
+.aq-nav__link:hover, .aq-nav__link[aria-current="page"] { color: var(--ink); background: var(--glass); }
+.aq-nav__link[aria-current="page"] { font-weight: 600; }
+.aq-nav .aq-btn { min-height: 40px; padding: 0 var(--space-5); }
+
+/* Quota dial: 270-degree arcs, butt caps, numbers in the state colour. */
+.aq-dial { --tint: var(--accent); --tint-ink: var(--accent-ink); position: relative; width: 124px; height: 124px; flex: none; }
+.aq-dial--warning { --tint: var(--warning); --tint-ink: var(--warning-ink); }
+.aq-dial--critical { --tint: var(--critical); --tint-ink: var(--critical-ink); }
+.aq-dial svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.aq-dial__track { fill: none; stroke: var(--track); stroke-width: var(--stroke-ring); }
+.aq-dial__track--off { stroke: var(--ink-3); stroke-dasharray: 1.4 1.75; }
+.aq-dial__fill { fill: none; stroke: var(--tint); stroke-width: var(--stroke-ring); }
+.aq-dial__fill--secondary { opacity: var(--opacity-secondary-ring); }
+.aq-dial--single .aq-dial__track, .aq-dial--single .aq-dial__fill { stroke-width: var(--stroke-ring-single); }
+.aq-dial__values { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font: 500 15px/20px var(--font-sans); font-variant-numeric: tabular-nums; color: var(--tint-ink); text-align: center; }
+.aq-dial__values .is-secondary { opacity: .85; }
+.aq-dial__values .is-label { color: var(--ink-2); font-weight: 400; }
+.aq-dial--lg { width: 248px; height: 248px; }
+.aq-dial--lg .aq-dial__track, .aq-dial--lg .aq-dial__fill { stroke-width: calc(var(--stroke-ring) * 2); }
+.aq-dial--lg.aq-dial--single .aq-dial__track, .aq-dial--lg.aq-dial--single .aq-dial__fill { stroke-width: calc(var(--stroke-ring-single) * 2); }
+.aq-dial--lg .aq-dial__values { font-size: 32px; line-height: 36px; gap: var(--space-1); }
+
+/* Service card: iOS overview card. */
+.aq-card { display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-6); border-radius: var(--radius-card); color: var(--ink); }
+.aq-card__top { display: flex; gap: var(--space-6); align-items: center; }
+.aq-card__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; flex: 1; }
+.aq-card__name { margin: 0 0 var(--space-1); font: 600 28px/34px var(--font-sans); letter-spacing: -0.015em; }
+.aq-card__plan { margin: 0; font: 600 17px/22px var(--font-sans); }
+.aq-card__reset { margin: 0; font: 400 17px/22px var(--font-sans); color: var(--accent-ink); }
+.aq-card__meta { margin: 0; font: 400 17px/22px var(--font-sans); color: var(--ink-2); }
+.aq-card__chev { align-self: flex-start; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: var(--ink-2); }
+.aq-card__chev svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Reset notice banner. */
+.aq-notice { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-5) var(--space-6); border-radius: var(--radius-card); background: var(--notice); box-shadow: inset 0 0 0 1px var(--glass-edge); }
+.aq-notice--mac { border-radius: var(--radius-md); box-shadow: none; padding: var(--space-4) var(--space-5); }
+.aq-notice__text { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; flex: 1; }
+.aq-notice__title { margin: 0; font: 600 17px/22px var(--font-sans); color: var(--ink); }
+.aq-notice__link { font: 400 17px/22px var(--font-sans); color: var(--accent-ink); text-decoration: none; }
+.aq-notice__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.aq-notice__close { width: 28px; height: 28px; border: 0; border-radius: 50%; background: var(--ink-3); color: var(--surface); display: grid; place-items: center; cursor: pointer; flex: none; }
+.aq-notice__close svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+
+/* Mac sheet: the menu-bar window as a panel. */
+.aq-sheet { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--radius-sheet); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line), var(--shadow-float); color: var(--ink); }
+.aq-sheet::before { content: ""; position: absolute; inset: 0; z-index: -1; background:
+  radial-gradient(75% 75% at 0% 0%, var(--glow), transparent),
+  radial-gradient(60% 60% at 100% 100%, var(--glow-2), transparent), var(--sheet); }
+.aq-sheet__head, .aq-sheet__foot { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-5); }
+.aq-sheet__head { border-bottom: 1px solid var(--line); font: 600 17px/22px var(--font-sans); }
+.aq-sheet__head img { width: 26px; height: 26px; border-radius: 6px; }
+.aq-sheet__head span:last-child, .aq-sheet__foot span:nth-child(2) { margin-left: auto; font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+.aq-sheet__foot { border-top: 1px solid var(--line); font: 400 15px/20px var(--font-sans); color: var(--ink-2); justify-content: space-between; }
+.aq-sheet__foot span:nth-child(2) { margin-left: 0; }
+.aq-sheet__body { display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-4) var(--space-5) var(--space-5); }
+.aq-sheet__services { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-5); }
+.aq-svc { display: flex; gap: var(--space-4); align-items: center; }
+.aq-svc__name { margin: 0; font: 600 22px/28px var(--font-sans); letter-spacing: -0.01em; }
+.aq-svc__plan { margin: 0 0 var(--space-1); font: 600 15px/20px var(--font-sans); }
+.aq-svc__reset { margin: 0; font: 400 13px/18px var(--font-sans); color: var(--accent-ink); }
+
+/* Status tag */
+.aq-tag { --dot: var(--accent); display: inline-flex; align-items: center; gap: var(--space-2); height: 28px; padding: 0 var(--space-3); border-radius: var(--radius-pill); background: var(--surface-2); font: 600 13px/18px var(--font-sans); color: var(--ink); }
+.aq-tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--dot); }
+.aq-tag--warning { --dot: var(--warning); color: var(--warning-ink); }
+.aq-tag--critical { --dot: var(--critical); color: var(--critical-ink); }
+.aq-tag--off { --dot: var(--ink-3); color: var(--ink-2); }
+
+/* Usage heatmap */
+.aq-heat { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 14px); grid-auto-columns: 14px; gap: 3px; }
+.aq-heat i { border-radius: var(--radius-xs); background: var(--data-0); }
+.aq-heat i.l1 { background: var(--data-1); } .aq-heat i.l2 { background: var(--data-2); } .aq-heat i.l3 { background: var(--data-3); } .aq-heat i.l4 { background: var(--data-4); }
+.aq-heat i.gap { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.aq-heat__months { display: flex; justify-content: space-between; margin-top: var(--space-2); font: 400 13px/18px var(--font-sans); color: var(--ink-2); }
+
+/* Hero wash: OverviewBackground, line for line. */
+.aq-wash { position: relative; isolation: isolate; background: var(--canvas); overflow: hidden; }
+.aq-wash::before { content: ""; position: absolute; inset: 0; z-index: -1; background:
+  radial-gradient(85% 85% at 100% 0%, rgb(from var(--accent) r g b / var(--wash-glow)), transparent),
+  linear-gradient(180deg, rgb(from var(--wash) r g b / var(--wash-top)) 0%, rgb(from var(--accent) r g b / var(--wash-mid)) 40%, transparent 70%); }
+@media (prefers-reduced-transparency: reduce) { .aq-wash::before { display: none; } }
+.aq-eyebrow { margin: 0; font: 600 15px/20px var(--font-sans); color: var(--ink-2); }
+.aq-display { margin: 0; font: 700 72px/1 var(--font-sans); letter-spacing: -0.03em; text-wrap: balance; color: var(--ink); }
+.aq-lead { margin: 0; max-width: 34em; font: 400 20px/30px var(--font-sans); letter-spacing: -0.01em; color: var(--ink-2); }
+@media (max-width: 640px) { .aq-display { font-size: 44px; } .aq-lead { font-size: 17px; line-height: 26px; } }
+@media (prefers-reduced-motion: reduce) { .aq-btn { transition: none; } }
+.aq-card__plan + .aq-card__reset { margin-top: var(--space-2); }
+.aq-heatwrap { width: max-content; max-width: 100%; overflow-x: auto; }
+
+/* Theme toggle: System / Light / Dark, a glass segmented capsule. */
+.aq-theme { display: inline-flex; gap: 2px; padding: 3px; border-radius: var(--radius-pill); }
+.aq-theme button { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 var(--space-3); border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--ink-2); font: 500 13px/18px var(--font-sans); cursor: pointer; }
+.aq-theme button:hover { color: var(--ink); }
+.aq-theme button[aria-pressed="true"] { background: var(--glass-edge); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / .12); }
+.aq-theme button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.aq-theme svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.aq-theme--compact button { padding: 0; width: 32px; justify-content: center; }
+.aq-theme--compact button span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }

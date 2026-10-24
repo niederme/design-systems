@@ -1,0 +1,1 @@
+The app icon, exported from the Mac app's asset catalogue at 512px, is the logo everywhere. `aiquota-mark-on-dark.svg` is composed from the icon's own layer SVGs without the tile; its ink is fixed (arcs `mark-outer` and `mark-inner`, near-white spark), so use it only on `icon-ground` or the dark `canvas`.

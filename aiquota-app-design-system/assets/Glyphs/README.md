@@ -1,0 +1,1 @@
+Service glyphs, copied from the iOS image sets `logo-openai` (Codex) and `logo-claude` (Claude). Single ink, black in the files. They are template images: the apps draw them inside the dial, 18pt, in the dial's colour (`accent`, `warning`, `critical` or `secondary`). In HTML use them as a mask, as `.aq-glyph` in `bundle.css` does.
