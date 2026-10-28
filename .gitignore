@@ -1,12 +1,15 @@
 .DS_Store
-.ds-sync/
+
+# design-sync build output and scratch
 ds-bundle/
-.design-sync/.cache/
-.design-sync/learnings/
-.design-sync/node_modules
-# Licensed fonts (Söhne) must never be committed: this repo is public
-*.woff2
+.ds-sync/
+**/.design-sync/.cache/
+**/.design-sync/learnings/
+**/.design-sync/node_modules
+
+# licensed fonts (Söhne) must never be committed to this public repo
 *.woff
+*.woff2
 *.otf
 *.ttf
 *.eot

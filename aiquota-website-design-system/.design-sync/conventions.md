@@ -1,47 +1,46 @@
-# How to build with AIQuota Website
+# Building with the AIQuota Website design system
 
-CSS only: there are no React components and nothing on `window.AIQuotaWebsite`. Build plain HTML/JSX with the system's classes and tokens. Everything loads from `styles.css` (tokens, then the component CSS, then Inter from Google Fonts).
+This is the AIQuota 2.0 website, matched to the shipping apps. There are no JS components: `window.AIQuotaWebsite` is empty. You build with plain HTML, the `aq-*` classes and the CSS custom properties below.
 
 ## Setup
 
-- Put the page inside `<body class="aq-root">` (or a wrapper `div.aq-root`). Without it the base type and colours are off.
-- The theme follows the visitor's system setting. To force one, set `data-theme="light"` or `data-theme="dark"` on `<html>`. Dark is the lead theme.
-- The hero sits in `.aq-wash`. Everything on it is glass (`.aq-glass`). Readings are dials.
+- `styles.css` loads everything: `tokens/tokens.css`, then `_ds_bundle.css` (the component classes, plus Inter from Google Fonts).
+- Put `class="aq-root"` on `<body>` or on your root element. It sets `box-sizing` for everything inside it.
+- Dark is the default. The page follows `prefers-color-scheme`, and `data-theme="light"` or `data-theme="dark"` on `<html>` overrides it. The `ThemeToggle` card shows the switch.
+- Open a page with `aq-wash` as its hero background. Glass (`aq-glass`) only reads correctly over the wash or `--canvas`.
 
-## Vocabulary (BEM, `aq-` prefix)
+## Styling idiom
 
-| Family | Classes |
+Classes for components, tokens for your own layout. Never hard-code hex values or pixel spacing.
+
+| Family | Real names |
 |---|---|
 | Type | `aq-display`, `aq-lead`, `aq-eyebrow` |
-| Buttons | `aq-btn` + `--primary` (one per view, `brand` fill), `--secondary` (glass), `--plain`, `--lg`; `aq-icongroup` |
-| Nav | `aq-nav aq-glass` > `aq-nav__brand`, `aq-nav__links` > `aq-nav__link`; `aq-nav--raised` |
-| Theme | `aq-theme`, `aq-theme--compact` |
-| Dial | `aq-dial` + `--warning` / `--critical` / `--single` / `--lg`; `aq-dial__track`, `aq-dial__track--off`, `aq-dial__fill`, `aq-dial__fill--secondary`, `aq-dial__values` |
-| Service card | `aq-card aq-glass` > `aq-card__top`, `aq-card__body`, `aq-card__name`, `aq-card__plan`, `aq-card__reset`, `aq-card__meta`, `aq-card__chev` |
-| Mac panel | `aq-sheet` (`__head`, `__body`, `__services`, `__foot`) with rows `aq-svc` (`__name`, `__plan`, `__reset`) |
-| Status | `aq-tag` + `--warning` / `--critical` / `--off` |
-| Notice | `aq-notice` > `aq-notice__title`, `aq-notice__text`, `aq-notice__link`, `aq-notice__close`; `aq-notice--mac` |
-| Heatmap | `aq-heatwrap` > `aq-heat`, `aq-heat__months` (cells use `--data-0` to `--data-4`) |
+| Grounds | `aq-wash`, `aq-glass` |
+| Actions | `aq-btn aq-btn--primary`, `aq-btn aq-btn--secondary aq-glass`, `aq-btn--plain`, `aq-btn--lg`, `aq-icongroup` |
+| Navigation | `aq-nav`, `aq-nav--raised`, `aq-nav__brand`, `aq-nav__links`, `aq-nav__link`, `aq-theme`, `aq-theme--compact` |
+| Dial | `aq-dial`, `aq-dial--single`, `aq-dial--lg`, `aq-dial--warning`, `aq-dial--critical`, `aq-dial__track`, `aq-dial__track--off`, `aq-dial__fill`, `aq-dial__fill--secondary`, `aq-dial__values` |
+| Cards and data | `aq-card aq-glass`, `aq-card__top`, `aq-card__body`, `aq-card__name`, `aq-card__plan`, `aq-card__reset`, `aq-card__meta`, `aq-heat`, `aq-heatwrap`, `aq-tag`, `aq-tag--warning`, `aq-tag--critical`, `aq-tag--off` |
+| Panels | `aq-sheet`, `aq-sheet__head`, `aq-sheet__services`, `aq-svc`, `aq-notice`, `aq-notice--mac` |
 
-Your own layout glue: plain flex/grid with `var(--space-1 … --space-32)`, radii `var(--radius-xs … --radius-sheet)`, colours from tokens only: `--canvas`, `--surface`, `--surface-2`, `--ink`, `--ink-2`, `--ink-3`, `--accent`, `--accent-ink` (purple words), `--brand`/`--on-brand`, `--warning`, `--critical`, `--line`. Never hard-code a hex value.
-
-## Rules
-
-- Purple is the quota colour; red (`critical`) only when an allowance is spent. State by the worst window: 85% and up `--warning`, 95% and up `--critical`, applied to the whole dial.
-- Show the app, don't describe it: use the service card, Mac panel and notice with sample readings, not screenshots.
-- Copy: short, literal, sentence case, numbers first.
+Tokens: ink `--ink`, `--ink-2`, `--ink-3`; grounds `--canvas`, `--surface`, `--surface-2`, `--glass`, `--glass-edge`, `--line`; brand `--accent`, `--brand`, `--on-brand`; state `--warning`, `--critical` (with `-ink` variants); heat `--data-0` to `--data-4`; spacing `--space-1` to `--space-32`; radii `--radius-xs` to `--radius-lg`, `--radius-card`, `--radius-pill`; `--shadow-float`; type `--font-sans`, `--font-mono`.
 
 ## Where the truth lives
 
-`_ds_bundle.css` (every class), `tokens/tokens.css` (every token), and each component's `components/<group>/<Name>/<Name>.prompt.md`, whose markup block is a working example. Copy dial SVGs from the QuotaDial or ServiceCard example and change only the fill arc.
+Read `tokens/tokens.css` and `_ds_bundle.css` before you style anything. Each `components/<Group>/<Name>/<Name>.prompt.md` gives that component's rules and copy. Its `<Name>.html` is working markup. Copy the dial's SVG from `QuotaDial.html` rather than drawing your own arcs. The app icon is `assets/Logos/aiquota-app-icon.png`.
+
+## Example
 
 ```html
-<body class="aq-root"><section class="aq-wash" style="padding:var(--space-24)">
-  <p class="aq-eyebrow">For Mac, iPhone and iPad</p>
-  <h1 class="aq-display">Know before you hit the limit.</h1>
-  <div style="display:flex;gap:var(--space-3)">
-    <a class="aq-btn aq-btn--primary aq-btn--lg" href="#">Download for Mac</a>
-    <a class="aq-btn aq-btn--secondary aq-btn--lg" href="#">Get the iPhone app</a>
-  </div>
-</section></body>
+<body class="aq-root">
+  <section class="aq-wash" style="padding: var(--space-32) var(--space-24); display: grid; gap: var(--space-16)">
+    <p class="aq-eyebrow">For Mac, iPhone and iPad</p>
+    <h1 class="aq-display">Know before you hit the limit.</h1>
+    <p class="aq-lead">AIQuota shows how much of your Codex and Claude allowance is left.</p>
+    <div style="display: flex; gap: var(--space-3)">
+      <a class="aq-btn aq-btn--primary" href="#">Download for Mac</a>
+      <a class="aq-btn aq-btn--secondary aq-glass" href="#">Get the iPhone app</a>
+    </div>
+  </section>
+</body>
 ```
