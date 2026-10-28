@@ -1,14 +1,11 @@
 {
   "projectId": "2deee27f-2073-4d6d-9c88-a9a6ea8b7585",
-  "shape": "package",
   "pkg": "aiquota-app-design-system",
   "globalName": "AIQuotaApp",
-  "offScript": "css-only: built by ../.design-sync/build-css-ds.mjs, not package-build.mjs",
-  "groups": {
-    "Cover": "Brand"
+  "shape": "package",
+  "readmeHeader": ".design-sync/conventions.md",
+  "promptFallback": {
+    "Cover": "The title card for the AIQuota App system: the overview wash with real service cards on it. It is a cover, not a component to reuse; build screens from the other cards."
   },
-  "summaries": {
-    "Cover": "The system's cover card: the name over the wash with sample service cards, for the project's thumbnail. Not a component to reuse in designs."
-  },
-  "readmeHeader": ".design-sync/conventions.md"
+  "inlineSvg": true
 }

@@ -1,49 +1,67 @@
-# How to build with nieder.me
+# Building with the nieder.me design system
 
-CSS only: there are no React components and nothing on `window.NiederMe`. Build plain HTML/JSX with the site's own classes and tokens. Everything loads from `styles.css`: the nieder.me site stylesheet (`work-case-study.css`), the style guide stylesheet (`styleguide.css`), and the Söhne `@font-face` rules with their font files in `fonts/`.
+This is nieder.me's production CSS: semantic HTML, bespoke CSS, minimal JS. There are no JS components: `window.NiederMe` is empty. Build pages with plain HTML, the site's classes and the CSS custom properties below.
 
 ## Setup
 
-- Page shell, as the site writes it: `<body class="policy-page is-subpage">` > `<div class="work-page">` > `<main class="work-article">`. Without this shell, the grid, rail and type scale don't apply.
-- Dark is the default (`--bg` black, `--fg` white). Light: set `data-theme="light"` on `<html>` and every token remaps. Design dark first.
-- Family: `font-family: "Sohne"` at weights 300, 400 and 700 (italics too). It's already the body font, so don't set another.
+- `styles.css` loads everything: `_ds_bundle.css` is the site's `work-case-study.css` (tokens, Söhne `@font-face`, page layout) followed by `styleguide.css`.
+- Use the page shell the site uses, or nothing lays out:
 
-## Vocabulary
+```html
+<body class="is-subpage">
+  <div class="work-page">
+    <!-- SiteNav: nav.mobile-nav, aside.rail, nav.global-nav -->
+    <main class="work-article"> … sections … </main>
+  </div>
+</body>
+```
 
-| Family | Classes |
+- Dark is the default. `data-theme="light"` on `<html>` switches every token.
+- Söhne (`"Sohne"`) ships as 300 Leicht, 400 Buch, 600 Dreiviertelfett and 700 Halbfett, with italics for 400 and 700 only. Don't substitute another family.
+
+## Styling idiom
+
+Tokens for color and rhythm; the site's classes for structure. Keep plain elements plain: `h1` to `h6`, `p`, `a`, `ul` and `blockquote` inside `main.work-article` are already styled.
+
+| Family | Real names |
 |---|---|
-| Page title | `section.work-index-header` > `div.rule` + `div.work-index-header-copy` > `h1` + `h2` (the second line renders in accent red) |
-| Article blocks | `section.work-article-grid` > `div.work-article-section` (`h2` + `div.work-article-body`); meta cards `work-article-meta-card` with `work-article-meta-label` / `work-article-meta-value` |
-| Numbered sections | `section.styleguide-section` > `div.rule` + `div.styleguide-section-grid` > `header.styleguide-section-head` (`p.styleguide-section-index` "01", `h2`) + `div.styleguide-section-body` (`p.styleguide-section-intro`) |
-| Rules | `div.rule`: the hairline that opens every section |
-| Links and buttons | `a.text-link` inline; `a.styleguide-button-lg` / `a.styleguide-button-md` (white fill, black text, 5px radius) for the one emphasised action. Links do most of the work, buttons are rare. |
-| Footer | `footer.site-footer`: copy the SiteFooter example whole; social icons are `span.social-icon.social-icon-{github,linkedin,x,instagram,email}` |
+| Page top | `work-index-header`, `work-index-header-copy`, `rule` |
+| Article layout (4/8 split) | `work-article-grid`, `work-article-meta`, `work-article-meta-card`, `work-article-meta-label`, `work-article-meta-value`, `work-article-body`, `work-article-section` |
+| Actions | `styleguide-button-lg`, `styleguide-button-md` (prominent links); otherwise plain `<a>` |
+| Navigation | `global-nav`, `global-nav-anchor`, `global-nav-popover`, `mobile-nav`, `mobile-nav-anchor`, `is-active`, `theme-toggle`, `cols-toggle` |
+| Footer | `site-footer`, `site-footer-grid`, `site-footer-brand`, `site-footer-name`, `site-footer-role`, `site-footer-social`, `site-footer-column`, `site-footer-links` |
 | Utility | `visually-hidden` |
 
-Tokens for your own glue: `--bg`, `--fg`, `--muted`, `--line`, `--accent`, `--accent-hover`, `--focus-ring`, `--grid-gutter` (40px rhythm), `--grid-width` (1268px max). Spacing steps 5, 8, 10, 12, 15, 20, 24, 28, 40px. Radii 0 for rules and squares, 999px for pills. Never hard-code a colour: use the tokens so light mode keeps working.
+Other `styleguide-*` classes exist only to document the system (specimens, swatches, token tables). Don't use them on site pages. The two button classes are the exception: they're the only prominent-link styles in this bundle.
 
-## Rules
-
-- Editorial and typography-led: large display type sets the tone; body copy stays at a measured width (about 60 to 70 characters).
-- One accent: red (`--accent`) carries all emphasis and interaction. Nothing else is coloured.
-- Structure stays visible: every section opens with `div.rule` and its numbered head.
+Tokens: `--bg`, `--fg`, `--muted`, `--line`, `--accent`, `--accent-hover`, `--focus-ring`, `--footer-meta`; grid `--grid-cols` (12), `--grid-gutter` (40px), `--grid-width` (1268px), with 69px columns. Spacing steps are 8, 16, 24, 40 and 72px or more. Red is rare: emphasis, interaction, and the second line of a display headline.
 
 ## Where the truth lives
 
-`_ds_bundle.css` (every class and token), `tokens/design-tokens.json` (W3C tokens with light values), this README's spec below, and each card's `components/<group>/<Name>/<Name>.prompt.md`, whose markup block is the site's own HTML.
+Read `README.md` (the written system), `tokens/design-tokens.json`, and `_ds_bundle.css` before you style anything. Each `components/<Group>/<Name>/<Name>.prompt.md` gives that pattern's rules. Its `<Name>.html` is working markup, so copy from it. Icons are in `assets/icons/` (`side-nav/`, `social/`, `logo-mark.svg`).
+
+## Example
 
 ```html
-<body class="policy-page is-subpage"><div class="work-page"><main class="work-article">
+<main class="work-article">
   <section class="work-index-header">
     <div class="rule"></div>
     <div class="work-index-header-copy"><h1>Selected</h1><h2>Work</h2></div>
   </section>
-  <section class="styleguide-section">
-    <div class="rule"></div>
-    <div class="styleguide-section-grid">
-      <header class="styleguide-section-head"><p class="styleguide-section-index">01</p><h2>About</h2></header>
-      <div class="styleguide-section-body"><p class="styleguide-section-intro">Product design and direction, with <a class="text-link" href="#">case studies</a>.</p></div>
-    </div>
+  <section class="work-article-grid">
+    <aside class="work-article-meta">
+      <div class="work-article-meta-card">
+        <p class="work-article-meta-label">Role</p>
+        <p class="work-article-meta-value">Design direction</p>
+      </div>
+    </aside>
+    <article class="work-article-body">
+      <section class="work-article-section">
+        <h2>Overview</h2>
+        <p>Measured copy, with an <a href="#">inline link</a>.</p>
+        <a class="styleguide-button-lg" href="#">View Case Study</a>
+      </section>
+    </article>
   </section>
-</main></div></body>
+</main>
 ```

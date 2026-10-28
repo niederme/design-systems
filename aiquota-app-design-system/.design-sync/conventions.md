@@ -1,45 +1,42 @@
-# How to build with AIQuota App
+# Building with the AIQuota App design system
 
-CSS only: there are no React components and nothing on `window.AIQuotaApp`. Build plain HTML/JSX with the system's classes and tokens. Everything loads from `styles.css` (tokens, then the component CSS, then Inter from Google Fonts).
+These are HTML and CSS stand-ins for the SwiftUI apps (iPhone, iPad, Mac). There are no JS components: `window.AIQuotaApp` is empty. You build with plain HTML, the `aq-*` classes and the CSS custom properties below.
 
 ## Setup
 
-- Put the screen inside `<body class="aq">` (or a wrapper `div.aq`). Without it, `box-sizing` and the base type are off.
-- Dark is the default. Light: set `data-theme="light"` on `<html>`.
-- Ground every screen in `.aq-wash` (the overview's purple wash) or `.aq-surface` (sheets). Cards and the notice go on top as `.aq-glass`. Never put glass on plain black.
+- `styles.css` loads everything: `tokens/tokens.css`, then `_ds_bundle.css` (the component classes, plus Inter from Google Fonts as the fallback off Apple devices).
+- Put `class="aq"` on `<body>` or on your root element. It sets `box-sizing` for everything inside it.
+- Dark is the default. Add `data-theme="light"` to `<html>` for light mode. Every token, and the glass filter, re-resolve from that.
+- Screens sit on a ground: `aq-wash` (the overview's purple wash) or `aq-surface` (sheets). Glass only reads correctly over a ground.
+- Service glyphs: `<i class="aq-glyph aq-glyph--openai"></i>` or `aq-glyph--claude`. They're CSS masks with the SVG built into the stylesheet, drawn in `currentColor`, so inside a dial they take its state colour.
 
-## Vocabulary (BEM, `aq-` prefix)
+## Styling idiom
 
-| Family | Classes |
+Classes for components, tokens for your own layout. Never hard-code hex values or pixel spacing.
+
+| Family | Real names |
 |---|---|
-| Grounds | `aq-wash`, `aq-surface`, `aq-glass`, `aq-glass--raised` |
-| Buttons | `aq-btn aq-btn--prominent` (filled accent), `aq-btn aq-btn--glass aq-glass`, `aq-btn--small`, `aq-iconbtn` in `aq-toolbar aq-glass`, `aq-iconbtn--mac`, `aq-link` |
-| Dial | `aq-dial` + `--warning` / `--critical` / `--off` / `--mac`; `aq-dial__track`, `aq-dial__fill`, `aq-dial__fill--2`, `aq-dial__body`, `aq-dial__values`, `aq-dial__label`; glyph `aq-glyph aq-glyph--openai` / `--claude` |
-| Service card | `aq-card aq-glass` > `aq-card__head` (`aq-card__name`, `aq-card__plan`, `aq-chev`), `aq-card__details`, `aq-card__reset`, `aq-card__meta`, `aq-card__status`; `aq-card--stacked` at large text |
-| Heatmap | `aq-heat` > `aq-heat__title`, `aq-heat__grid`, `aq-heat__months` |
-| Notice | `aq-notice aq-glass` > `aq-notice__title`, `aq-notice__text`, `aq-notice__link`, `aq-notice__close`; `aq-notice--mac` |
-| Mac | `aq-macsheet` (`__head`, `__body`, `__foot`), `aq-macrow` (`__name`, `__plan`, `__cap`, `__warn`) |
-| iPhone frame | `aq-phone`, `aq-island`, `aq-screen`, `aq-navbar`, `aq-home` |
-| Numbers | `aq-num` (tabular digits) |
+| Grounds and depth | `aq-wash`, `aq-surface`, `aq-glass`, `aq-glass--raised` |
+| Actions | `aq-btn aq-btn--prominent`, `aq-btn aq-btn--glass aq-glass`, `aq-btn--small`, `aq-toolbar`, `aq-iconbtn`, `aq-iconbtn--mac`, `aq-link` |
+| Dial | `aq-dial`, `aq-dial--warning`, `aq-dial--critical`, `aq-dial--off`, `aq-dial--mac`, `aq-dial__track`, `aq-dial__fill`, `aq-dial__fill--2`, `aq-dial__values` |
+| Cards | `aq-card aq-glass`, `aq-card--stacked`, `aq-card__summary`, `aq-card__name`, `aq-card__plan`, `aq-card__reset`, `aq-card__status`; Mac: `aq-macrow`, `aq-macsheet` |
+| Data, banners | `aq-heat`, `aq-heat__grid`, `aq-notice`, `aq-notice--mac`, `aq-status`, `aq-num` (tabular digits) |
+| Device frames | `aq-phone`, `aq-screen`, `aq-island`, `aq-home`, `aq-grabber` |
 
-Your own layout glue: plain flex/grid with `var(--space-4 … --space-24)`, radii `var(--radius-card)`, colours from tokens only (`--primary`, `--secondary`, `--tertiary`, `--accent`, `--warning`, `--critical`, `--base`). Never hard-code a hex value.
-
-## Rules
-
-- State colour by the worst window: under 85% default (accent), 85% and up `aq-dial--warning`, 95% and up `aq-dial--critical`, disconnected `aq-dial--off`. The whole dial changes, not one ring.
-- Dial arcs: SVG `viewBox="0 0 124 124"`, centre (62, 62). A ring of radius r starts at angle 135° and sweeps 270°×percent clockwise: point(θ) = (62 + r·cos θ, 62 + r·sin θ), path `M start A r r 0 <large> 1 end`, with large = 1 when the sweep is over 180°. Two windows: outer r 58 and inner r 48, stroke-width 8; one window: r 56, stroke-width 12. Draw the full 270° as `aq-dial__track` first.
-- Copy: short, literal, sentence case, numbers first (*62% 5h*, *5h resets 3:40 PM*).
+Tokens: text `--primary`, `--secondary`, `--tertiary`; state `--accent` (under 85%), `--warning` (85% and up), `--critical` (95% and up), `--reset-accent`; grounds `--base`, `--glass`, `--glass-edge`; heat ramp `--heat-0` to `--heat-4`; spacing `--space-2` to `--space-24`; radii `--radius-card` (iOS 28), `--radius-mac-card`, `--radius-pill`; type `--font-sans`, `--font-rounded`.
 
 ## Where the truth lives
 
-`_ds_bundle.css` (every class), `tokens/tokens.css` (every token), and each component's `components/<group>/<Name>/<Name>.prompt.md`, whose markup block is a working example to copy.
+Read `tokens/tokens.css` and `_ds_bundle.css` before you style anything. Each `components/<Group>/<Name>/<Name>.prompt.md` gives that component's rules and the exact strings the app uses. Its `<Name>.html` is working markup. Copy the dial's SVG geometry from `QuotaDial.html` rather than drawing your own arcs.
+
+## Example
 
 ```html
-<body class="aq"><div class="aq-wash" style="padding:var(--space-24)">
-  <div class="aq-notice aq-glass">
-    <p class="aq-notice__title">Codex usage reset announced</p>
-    <a class="aq-notice__link" href="#">Read more on Codex Resets ↗</a>
-  </div>
-  <button class="aq-btn aq-btn--prominent" type="button">Continue</button>
-</div></body>
+<body class="aq">
+  <main class="aq-wash" style="padding: var(--space-24); display: grid; gap: var(--space-24)">
+    <!-- a service card: copy the full markup from components/Cards/ServiceCard/ServiceCard.html -->
+    <button class="aq-btn aq-btn--prominent" type="button">Connect</button>
+    <button class="aq-btn aq-btn--glass aq-glass" type="button">Try Demo</button>
+  </main>
+</body>
 ```
