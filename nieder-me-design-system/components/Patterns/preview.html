@@ -1,0 +1,91 @@
+<!-- @dsCard group="Patterns" height=1300 subtitle="Navigation, responsive behavior, framed objects, theme, copy blocks" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../css/work-case-study.css">
+<link rel="stylesheet" href="../../css/styleguide.css">
+<title>Patterns</title>
+</head>
+<body class="policy-page is-subpage design-system-page">
+<div class="work-page">
+<main class="work-article">
+        <section class="styleguide-section" id="patterns" aria-labelledby="patterns-title">
+          <div class="rule"></div>
+          <div class="styleguide-section-grid">
+            <header class="styleguide-section-head">
+              <p class="styleguide-section-index">07</p>
+              <h2 id="patterns-title">Patterns</h2>
+            </header>
+
+            <div class="styleguide-section-body">
+              <p class="styleguide-section-intro">
+                Repeated patterns should make the site easier to scan. They carry navigation, hierarchy, and state without adding extra explanation.
+              </p>
+
+              <article class="styleguide-pattern-card styleguide-pattern-card--nav">
+                <p class="styleguide-pattern-label">Navigation</p>
+                <div class="styleguide-nav-specimen">
+                  <div class="styleguide-nav-specimen-rail" aria-hidden="true">
+                    <span class="styleguide-nav-specimen-slot styleguide-nav-specimen-slot--active"></span>
+                    <span class="styleguide-nav-specimen-slot"></span>
+                    <span class="styleguide-nav-specimen-slot"></span>
+                    <span class="styleguide-nav-specimen-slot"></span>
+                  </div>
+                  <div class="styleguide-nav-specimen-copy">
+                    <h3>Rails, local jumps, and section states should describe the same structure.</h3>
+                    <p>Use the left rail for persistent page-level navigation. Use local jumps for scanning a long page. Active states should follow scroll position, not just click state.</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="styleguide-pattern-card styleguide-pattern-card--responsive">
+                <p class="styleguide-pattern-label">Responsive behavior</p>
+                <div class="styleguide-responsive-specimen">
+                  <article class="styleguide-responsive-step">
+                    <p class="styleguide-responsive-range">1501px+</p>
+                    <h3>Widescreen desktop</h3>
+                    <p>The grid opens up, gutters widen, and hero typography scales harder without changing the underlying structure.</p>
+                  </article>
+                  <article class="styleguide-responsive-step">
+                    <p class="styleguide-responsive-range">960-1500px</p>
+                    <h3>Core desktop</h3>
+                    <p>Use the 12-column baseline, persistent rail, and composed promo blocks as the default reading layout.</p>
+                  </article>
+                  <article class="styleguide-responsive-step">
+                    <p class="styleguide-responsive-range">521-959px</p>
+                    <h3>Compact desktop / tablet</h3>
+                    <p>Keep the editorial structure, but tighten spacing and simplify large horizontal compositions into more static arrangements.</p>
+                  </article>
+                  <article class="styleguide-responsive-step">
+                    <p class="styleguide-responsive-range">520px and below</p>
+                    <h3>Phone</h3>
+                    <p>Switch to the mobile treatment: narrower insets, tighter spacing, and horizontal scrollers only where peeking content adds meaning.</p>
+                  </article>
+                </div>
+              </article>
+
+              <div class="styleguide-patterns">
+                <article class="styleguide-pattern-card">
+                  <p class="styleguide-pattern-label">Framed objects</p>
+                  <h3>Most content should live directly on the page.</h3>
+                  <p>Frames are reserved for moments that need separation or emphasis.</p>
+                </article>
+                <article class="styleguide-pattern-card">
+                  <p class="styleguide-pattern-label">Theme state</p>
+                  <h3>Dark mode is first; light mode is a controlled remapping.</h3>
+                  <p>Do not redesign each component per theme. Preserve hierarchy and only remap token values.</p>
+                </article>
+                <article class="styleguide-pattern-card">
+                  <p class="styleguide-pattern-label">Copy blocks</p>
+                  <h3>Paragraph width stays measured even when the layout gets dramatic.</h3>
+                  <p>Favor readable line lengths over filling every available column.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+</main>
+</div>
+</body>
+</html>
