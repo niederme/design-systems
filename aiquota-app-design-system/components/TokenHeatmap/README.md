@@ -1,9 +1,8 @@
 # TokenHeatmap
 
-Codex token activity for 42 weeks (`MobileTokenHistoryView`, `CodexTokenHistoryView`): a column per week, a row per day, coloured by quartile.
+Codex token activity (`MobileTokenHistoryView` on iOS, `CodexTokenHistoryView` on the Mac): a column per week, a row per day, coloured by quartile. No title and no month labels.
 
-- 42 × 7 squares, 1px gaps, `radius-cell`; square = (width − 41) ÷ 42.
+- iOS 42 weeks, Mac 52. Square = (width − (weeks − 1)) ÷ weeks, 1px gaps, `radius-cell`. The grid takes the card's content width plus 10pt and is outset by `dial-outset` each side.
 - `heat-none` no record, `heat-0` reported zero, `heat-1` to `heat-4` by quartile of active days. Future days empty.
-- Month labels in `heat-label`, `secondary`, at the week holding the 1st, at least 24pt apart.
-- Mac adds *Token activity* above it in `caption2`, `secondary`.
-- Accessibility: *Token activity, past 42 weeks*, hint *Dim cells have no record. Dates are in UTC.*, a label per day.
+- No data yet (Mac placeholder row): `aq-heat--empty`, every cell `overview-track` at 60%.
+- Accessibility: *Token activity, past 42 weeks* (52 on the Mac), a label per day; the Mac shows each day's count as a tooltip.

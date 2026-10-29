@@ -18,12 +18,13 @@ Classes for components, tokens for your own layout. Never hard-code hex values o
 |---|---|
 | Grounds and depth | `aq-wash`, `aq-surface`, `aq-glass`, `aq-glass--raised` |
 | Actions | `aq-btn aq-btn--prominent`, `aq-btn aq-btn--glass aq-glass`, `aq-btn--small`, `aq-toolbar`, `aq-iconbtn`, `aq-iconbtn--mac`, `aq-link` |
-| Dial | `aq-dial`, `aq-dial--warning`, `aq-dial--critical`, `aq-dial--off`, `aq-dial--mac`, `aq-dial__track`, `aq-dial__fill`, `aq-dial__fill--2`, `aq-dial__values` |
-| Cards | `aq-card aq-glass`, `aq-card--stacked`, `aq-card__summary`, `aq-card__name`, `aq-card__plan`, `aq-card__reset`, `aq-card__status`; Mac: `aq-macrow`, `aq-macsheet` |
+| Dial | `aq-dial`, `aq-dial--warning`, `aq-dial--critical`, `aq-dial--off`, `aq-dial__track`, `aq-dial__fill`, `aq-dial__fill--2`, `aq-dial__values` |
+| Cards | `aq-card aq-glass`, `aq-card--stacked`, `aq-card__summary`, `aq-card__name`, `aq-card__plan`, `aq-card__reset`, `aq-card__status`; Mac: `aq-macrow`, `aq-macrow__title`, `aq-macrow__name`, `aq-macrow__status`, `aq-macrow__status--warning`, `aq-macrow__status--none`, `aq-macsheet` |
 | Data, banners | `aq-heat`, `aq-heat__grid`, `aq-notice`, `aq-notice--mac`, `aq-status`, `aq-num` (tabular digits) |
+| Widgets (always dark, `widget-*` tokens) | `aq-widget`, `aq-widget--small`, `--medium`, `--large`, `--lock`, `--circular`, `--rect`, `aq-wdial` (set `--size`), `aq-wdial--readings`, `--warning`, `--critical`, `--muted`, `--curved`, `aq-wtile`, `aq-wname`, `aq-wstatus`, `aq-wrow`, `aq-wstrip`, `aq-wgrid`, `aq-wsummary`, `aq-wdetails`, `aq-wheat`, `aq-wsplit` |
 | Device frames | `aq-phone`, `aq-screen`, `aq-island`, `aq-home`, `aq-grabber` |
 
-Tokens: text `--primary`, `--secondary`, `--tertiary`; state `--accent` (under 85%), `--warning` (85% and up), `--critical` (95% and up), `--reset-accent`; grounds `--base`, `--glass`, `--glass-edge`; heat ramp `--heat-0` to `--heat-4`; spacing `--space-2` to `--space-24`; radii `--radius-card` (iOS 28), `--radius-mac-card`, `--radius-pill`; type `--font-sans`, `--font-rounded`.
+Tokens: text `--primary`, `--secondary`, `--tertiary`; state `--accent` (under 85%), `--warning` (85% and up), `--critical` (95% and up), `--reset-accent`; grounds `--base`, `--glass`, `--glass-edge`; heat ramp `--heat-0` to `--heat-4`; widgets only `--widget-ground`, `--widget-ink`, `--widget-accent`, `--widget-reset`, `--widget-secondary`, `--widget-track`; spacing `--space-2` to `--space-24`; radii `--radius-card` (iOS 28), `--radius-account` (Mac 24), `--radius-pill`; type `--font-sans`, `--font-rounded`.
 
 ## Where the truth lives
 

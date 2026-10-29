@@ -1,6 +1,8 @@
 # NoticeBanner
 
-The dismissible reset announcement above the cards (`CodexResetNoticeBanner`, `MacResetNoticeBanner`).
+The dismissible reset announcement above the cards (`CodexResetNoticeBanner`, `MacResetNoticeBanner`). One style on both platforms.
 
-- iOS: glass, `radius-card`, 12 × 16pt padding. Title in `body` semibold, `primary`. *Read more on Codex Resets* with `arrow.up.right` in `body`, `accent`. `xmark.circle.fill` in `tertiary` in a 44pt target.
-- Mac: `radius-mac-card`, regular material plus `notice-tint`, 1px `card-edge-mac` border. Text in `mac-notice`, link in `accent`, dismiss glyph 16pt in `secondary`.
+- `aq-notice`: regular material plus `notice-tint`, a 1px `notice-edge` border, `radius-account`, 12 × 16pt padding.
+- Title in `notice` semibold, `primary`. *Read more on Codex Resets* with `arrow.up.right`, 6pt apart, in `notice` regular, `accent`. Lines 6pt apart.
+- Dismiss: `xmark.circle.fill`, 16pt, `secondary` at 75%, top-trailing in a 44pt target on iOS, 32pt on the Mac (`aq-notice--mac`).
+- On iOS it sits first in the card column, 8pt above the cards. On the Mac it's the first item in the sheet body, 16pt above the rows.
