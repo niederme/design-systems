@@ -1,4 +1,4 @@
-/* AIQuota App components, round 2: HTML stand-ins for the SwiftUI views in niederme/ai-quota, matched to main@3d5aff4.
+/* AIQuota App components, round 3: HTML stand-ins for the SwiftUI views in niederme/ai-quota, matched to main@74bd0dd.
    Dark is the first theme. Every colour comes from tokens.css. Glass and blur are approximations of system materials. */
 @import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap");
 .aq, .aq * { box-sizing: border-box; }
@@ -9,7 +9,7 @@ body { margin: 0; font-family: var(--font-sans); color: var(--primary); backgrou
 :root { --aq-glass-filter: var(--glass-blur) brightness(0.75); --aq-glow-r: 334px; }
 [data-theme="light"] { --aq-glass-filter: var(--glass-blur); }
 
-/* ---------- Grounds: three depths only (ground, glass, raised glass) ---------- */
+/* ---------- Grounds: ground, account surface, glass ---------- */
 .aq-wash { position: relative; isolation: isolate; background: var(--base); }
 .aq-wash::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background:
   radial-gradient(circle var(--aq-glow-r) at 100% 0%, var(--wash-glow), transparent),
@@ -24,72 +24,81 @@ body { margin: 0; font-family: var(--font-sans); color: var(--primary); backgrou
 .aq-glass--raised { background: var(--glass-raised); }
 @media (prefers-reduced-transparency: reduce) { .aq-glass { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--glass-raised); } }
 
+/* The account surface (OverviewAccountSurface, MacAccountRowSurface): a flat accent tint with a 1pt top line, clipped
+   to the radius. No blur, border or shadow. Pressing adds accent at 5%. Resting on iOS cards; hover and focus on Mac rows. */
+.aq-card, .aq-macrow { --aq-press: transparent; position: relative; isolation: isolate; }
+.aq-card::before, .aq-macrow::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(var(--overview-glass-highlight), var(--overview-glass-highlight)) top / 100% 1px no-repeat,
+    linear-gradient(var(--aq-press), var(--aq-press)), var(--overview-glass);
+  transition: opacity .12s ease-out; }
+.aq-card:active, .aq-macrow:active, .aq-card--pressed, .aq-macrow--pressed { --aq-press: color-mix(in srgb, var(--accent) 5%, transparent); }
+@media (prefers-reduced-motion: reduce) { .aq-card::before, .aq-macrow::before { transition: none; } }
+
 /* ---------- Service glyph: template image, tinted by the dial ---------- */
 .aq-glyph { display: block; width: var(--glyph); height: var(--glyph); background: currentColor;
   -webkit-mask: var(--aq-glyph-src) center / contain no-repeat; mask: var(--aq-glyph-src) center / contain no-repeat; }
 .aq-glyph--openai { --aq-glyph-src: url("../assets/Glyphs/glyph-openai.svg"); }
 .aq-glyph--claude { --aq-glyph-src: url("../assets/Glyphs/glyph-claude.svg"); }
 
-/* ---------- QuotaDial: 270° arcs open at the bottom, butt caps, readings inside ---------- */
-.aq-dial { --tint: var(--accent); --dial-track: var(--track);
-  position: relative; width: var(--dial); height: var(--dial); flex: none; color: var(--tint); }
+/* ---------- QuotaDial (MacAccountDial geometry, both platforms): 270° arcs open at the bottom, butt caps ---------- */
+/* The frame keeps the outer stroke at the top and drops the circle's unused lower quarter. */
+.aq-dial-frame { flex: none; width: var(--dial); height: calc(var(--dial) - var(--dial-outset)); padding-top: var(--dial-outset); overflow: visible; }
+.aq-dial { --tint: var(--accent); position: relative; width: var(--dial); height: var(--dial); color: var(--tint); }
 .aq-dial--warning { --tint: var(--warning); }
 .aq-dial--critical { --tint: var(--critical); }
-.aq-dial--off { --tint: var(--secondary); }
+.aq-dial--off { --tint: var(--tertiary); }
 .aq-dial svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.aq-dial__track { fill: none; stroke: var(--dial-track); }
+.aq-dial__track { fill: none; stroke: var(--overview-track); }
 .aq-dial__fill { fill: none; stroke: var(--tint); }
 .aq-dial__fill--2, .aq-dial__v--2 { opacity: var(--ring-secondary); }
-.aq-dial__body { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-6); }
-.aq-dial__values { display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
-  font: 500 15px/20px var(--font-sans); letter-spacing: -0.23px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.aq-dial__label { font: 400 11px/13px var(--font-sans); letter-spacing: 0.06px; }
-.aq-dial__values strong { font-weight: 700; }
-.aq-dial--mac { --dial-track: var(--track-mac); width: var(--dial-mac); height: var(--dial-mac); }
-.aq-dial--mac .aq-dial__body { gap: 5px; }
-.aq-dial--mac .aq-dial__values { font: 600 16px/20px var(--font-sans); }
-.aq-dial-frame-mac { height: 114px; padding-top: 6px; overflow: visible; flex: none; }
+.aq-dial__body { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+/* With two rings the readings lift 5pt, clear of the inner arc's open ends. */
+.aq-dial:has(.aq-dial__v--2) .aq-dial__body { transform: translateY(-5px); }
+.aq-dial__values { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); width: 80px;
+  font: 600 16px/20px var(--font-sans); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.aq-dial__label { font: 400 13px/16px var(--font-sans); }
 
-/* ---------- ServiceCard (iOS overview card) ---------- */
-.aq-card { display: flex; flex-direction: column; gap: var(--space-8); width: 100%; padding: var(--space-16); border: 0; border-radius: var(--radius-card);
-  color: var(--primary); text-align: left; font: inherit; cursor: pointer; }
+/* ---------- ServiceCard (iOS overview card, ProviderDialCardContent) ---------- */
+.aq-card { display: flex; flex-direction: column; width: 100%; padding: 21px var(--space-16); border: 0; border-radius: var(--radius-account);
+  background: none; color: var(--primary); text-align: left; font: inherit; cursor: pointer; }
+.aq-card:has(> .aq-heat) { padding-bottom: var(--space-16); }
 .aq-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.aq-card__summary { display: flex; gap: var(--space-24); align-items: flex-start; }
+.aq-card__summary { display: flex; gap: var(--space-20); align-items: flex-start; }
 .aq-card--stacked .aq-card__summary { flex-direction: column; gap: var(--space-12); }
-.aq-card__details { display: flex; flex-direction: column; gap: var(--space-8); flex: 1; min-width: 0; padding-top: var(--space-2); }
-.aq-card__head { display: flex; flex-direction: column; }
-.aq-card__name { display: flex; align-items: baseline; gap: var(--space-4); margin: 0; font: 600 20px/22px var(--font-sans); letter-spacing: -0.25px; }
+.aq-card__details { display: flex; flex-direction: column; gap: var(--space-8); flex: 1; min-width: 0; padding-top: var(--space-8); }
+.aq-card__head { display: flex; flex-direction: column; gap: var(--space-4); }
+.aq-card__name { display: flex; align-items: center; gap: var(--space-4); margin: 0; font: 600 20px/24px var(--font-sans); letter-spacing: -0.25px; }
 .aq-card__name span { flex: 1; }
-.aq-card__plan { margin: 0; font: 600 13px/15px var(--font-sans); letter-spacing: -0.1px; }
-.aq-card__captions { display: flex; flex-direction: column; gap: var(--space-4); }
-.aq-card__reset { margin: 0; font: 400 13px/15px var(--font-sans); letter-spacing: -0.1px; color: var(--reset-accent); font-variant-numeric: tabular-nums; }
-.aq-card__meta { margin: 0; font: 400 13px/15px var(--font-sans); letter-spacing: -0.1px; color: var(--secondary); }
-.aq-card__status { margin: 0; font: 400 13px/18px var(--font-sans); color: var(--secondary); }
-.aq-chev { width: 22px; height: 22px; flex: none; color: var(--tertiary); align-self: center; }
+.aq-card__plan { margin: 0; font: 600 13px/16px var(--font-sans); }
+.aq-card__captions { display: flex; flex-direction: column; }
+.aq-card__reset { margin: 0; font: 400 13px/16px var(--font-sans); color: var(--reset-accent); font-variant-numeric: tabular-nums; }
+.aq-card__meta { margin: 0; font: 400 13px/16px var(--font-sans); color: var(--secondary); }
+.aq-card__status { margin: 0; font: 400 13px/16px var(--font-sans); color: var(--secondary); }
+.aq-card__status--warning { color: var(--warning); }
+.aq-chev { width: 20px; height: 20px; flex: none; color: var(--tertiary); }
+/* The heatmap is outset by the dial's stroke so its edges line up with the outer ring. */
+.aq-card > .aq-heat, .aq-macrow > .aq-heat { margin: var(--space-8) calc(-1 * var(--dial-outset)) 0; }
 
-/* ---------- TokenHeatmap: 42 weeks × 7 days, 1px gaps ---------- */
-.aq-heat { display: flex; flex-direction: column; gap: var(--space-4); }
+/* ---------- TokenHeatmap: a column per week (42 on iOS, 52 on the Mac), 1px gaps, no labels ---------- */
 .aq-heat__grid { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, auto); grid-auto-columns: 1fr; gap: 1px; }
 .aq-heat__grid i { aspect-ratio: 1; border-radius: var(--radius-cell); background: var(--heat-none); }
 .aq-heat__grid i.z { background: var(--heat-0); } .aq-heat__grid i.l1 { background: var(--heat-1); } .aq-heat__grid i.l2 { background: var(--heat-2); }
 .aq-heat__grid i.l3 { background: var(--heat-3); } .aq-heat__grid i.l4 { background: var(--heat-4); } .aq-heat__grid i.f { background: transparent; }
-.aq-heat__months { position: relative; height: 12px; font: 400 8px/10px var(--font-sans); color: var(--secondary); }
-.aq-heat__months span { position: absolute; top: 0; }
-.aq-heat__title { font: 400 11px/13px var(--font-sans); color: var(--secondary); }
+.aq-heat--empty { opacity: .6; }
+.aq-heat--empty .aq-heat__grid i { background: var(--overview-track); }
 
-/* ---------- NoticeBanner ---------- */
-.aq-notice { display: flex; align-items: flex-start; gap: var(--space-8); padding: var(--space-12) var(--space-16); border-radius: var(--radius-card); }
-.aq-notice__text { display: flex; flex-direction: column; gap: var(--space-6); flex: 1; min-width: 0; font: 400 17px/22px var(--font-sans); letter-spacing: -0.43px; }
-.aq-notice__title { margin: 0; font-weight: 600; color: var(--primary); }
-.aq-notice__link { color: var(--accent); text-decoration: none; }
-.aq-notice__link:hover { text-decoration: underline; text-underline-offset: 3px; }
-.aq-notice__close { display: grid; place-items: start end; width: 44px; height: 44px; margin: -8px -4px -8px 0; padding: 8px 4px 0 0; border: 0; background: none; color: var(--tertiary); cursor: pointer; }
-.aq-notice__close svg { width: 22px; height: 22px; }
-.aq-notice--mac { position: relative; isolation: isolate; border-radius: var(--radius-mac-card); box-shadow: inset 0 0 0 1px var(--card-edge-mac);
+/* ---------- NoticeBanner (CodexResetNoticeBanner, MacResetNoticeBanner): one style on both platforms ---------- */
+.aq-notice { position: relative; isolation: isolate; display: flex; align-items: flex-start; gap: var(--space-8); padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-account); box-shadow: inset 0 0 0 1px var(--notice-edge);
   background: var(--notice-tint); -webkit-backdrop-filter: var(--sheet-blur); backdrop-filter: var(--sheet-blur); }
-.aq-notice--mac .aq-notice__text { font: 400 15px/20px var(--font-sans); letter-spacing: 0; }
-.aq-notice--mac .aq-notice__close { width: 32px; height: 32px; margin: 0; padding: 0; color: var(--secondary); }
-.aq-notice--mac .aq-notice__close svg { width: 16px; height: 16px; }
+.aq-notice__text { display: flex; flex-direction: column; gap: var(--space-6); flex: 1; min-width: 0; font: 400 15px/20px var(--font-sans); }
+.aq-notice__title { margin: 0; font-weight: 600; color: var(--primary); }
+.aq-notice__link { display: inline-flex; align-items: baseline; gap: var(--space-6); color: var(--accent); text-decoration: none; }
+.aq-notice__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.aq-notice__close { display: grid; place-items: start end; flex: none; width: var(--tap); height: var(--tap); padding: 0; border: 0; background: none;
+  color: var(--secondary); cursor: pointer; }
+.aq-notice__close svg { width: 16px; height: 16px; opacity: .75; }
+.aq-notice--mac .aq-notice__close { width: 32px; height: 32px; }
 
 /* ---------- Buttons ---------- */
 .aq-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8); min-height: 50px; padding: 0 var(--space-20);
@@ -98,12 +107,28 @@ body { margin: 0; font-family: var(--font-sans); color: var(--primary); backgrou
 .aq-btn--prominent { background: var(--accent); color: var(--on-fill); box-shadow: inset 0 1px 0 var(--glass-edge); }
 .aq-btn--glass { color: var(--primary); }
 .aq-btn--small { min-height: 36px; padding: 0 var(--space-16); font-size: 15px; letter-spacing: -0.23px; }
+/* Mac controls: .borderedProminent / .bordered, tinted accent. Small is Connect on a placeholder row; regular is Reconnect. */
+.aq-btn--mac { min-height: 24px; padding: 0 var(--space-12); border-radius: 6px; font: 500 13px/16px var(--font-sans); letter-spacing: 0; box-shadow: none; }
+.aq-btn--mac.aq-btn--small { min-height: 22px; padding: 0 10px; }
+.aq-btn--bordered { background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); }
 .aq-btn[disabled] { opacity: .45; cursor: default; transform: none; }
 .aq-iconbtn { display: grid; place-items: center; width: var(--tap); height: var(--tap); border: 0; border-radius: 50%; background: transparent; color: var(--primary); cursor: pointer; padding: 0; }
 .aq-iconbtn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.aq-iconbtn--mac { width: 36px; height: 36px; background: var(--control-mac); box-shadow: none; }
-.aq-iconbtn--mac svg { width: 16px; height: 16px; }
+.aq-iconbtn--mac { width: 36px; height: 36px; background: var(--overview-glass); }
+.aq-iconbtn--mac svg { width: 15px; height: 15px; }
 .aq-toolbar { display: inline-flex; gap: 0; border-radius: var(--radius-pill); }
+
+/* ---------- Placeholder row parts (MacAccountPlaceholderRow) ---------- */
+.aq-placeholder { display: flex; align-items: center; height: 16px; }
+.aq-placeholder::before { content: ""; width: 100%; max-width: 136px; height: 8px; border-radius: var(--radius-chip); background: var(--overview-track); }
+.aq-placeholder--long::before { max-width: 172px; }
+
+/* ---------- Scroll edge fade (MacAccountGridView, OverviewScrollView): 24pt, only at an edge with hidden content ---------- */
+.aq-scroll { --aq-fade-top: #000; --aq-fade-bottom: #000;
+  -webkit-mask-image: linear-gradient(to bottom, var(--aq-fade-top), #000 24px, #000 calc(100% - 24px), var(--aq-fade-bottom));
+  mask-image: linear-gradient(to bottom, var(--aq-fade-top), #000 24px, #000 calc(100% - 24px), var(--aq-fade-bottom)); }
+.aq-scroll--top { --aq-fade-top: transparent; }
+.aq-scroll--bottom { --aq-fade-bottom: transparent; }
 
 /* ---------- iPhone frame for screen previews ---------- */
 .aq-phone { position: relative; width: 393px; min-height: 852px; border-radius: 55px; overflow: hidden; box-shadow: 0 0 0 10px var(--device); }
@@ -112,8 +137,9 @@ body { margin: 0; font-family: var(--font-sans); color: var(--primary); backgrou
 .aq-island { position: absolute; top: 11px; left: 50%; width: 124px; height: 36px; margin-left: -62px; border-radius: 20px; background: var(--device); }
 .aq-navbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) var(--space-16) 0; }
 .aq-navbar h1 { margin: 0; font: 700 34px/41px var(--font-sans); letter-spacing: 0.4px; }
-.aq-screen { display: flex; flex-direction: column; gap: var(--space-24); padding: var(--space-20) var(--space-16) var(--space-20); }
+.aq-screen { display: flex; flex-direction: column; gap: var(--space-8); padding: var(--space-8) var(--space-16) var(--space-16); }
 .aq-fresh { margin: 0; text-align: center; font: 400 13px/18px var(--font-sans); color: var(--secondary); }
+.aq-freshness { display: flex; flex-direction: column; gap: var(--space-4); padding-top: var(--space-8); }
 .aq-home { position: absolute; bottom: 8px; left: 50%; width: 144px; height: 5px; margin-left: -72px; border-radius: 3px; background: var(--primary); }
 
 /* ---------- Full sheet stack (John's navigation rule) ---------- */
@@ -133,27 +159,143 @@ body { margin: 0; font-family: var(--font-sans); color: var(--primary); backgrou
 .aq-link { font: 400 17px/22px var(--font-sans); color: var(--accent); text-decoration: none; }
 .aq-sheetbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-8) var(--space-16); font: 600 17px/22px var(--font-sans); }
 
-/* ---------- Mac menu-bar sheet ---------- */
+/* ---------- Mac menu-bar sheet (PopoverView) ---------- */
 .aq-macsheet { position: relative; isolation: isolate; width: 480px; max-width: 100%; border-radius: 18px; overflow: hidden; color: var(--primary); }
+.aq-macsheet--single { width: 420px; }
 .aq-macsheet::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; -webkit-backdrop-filter: var(--sheet-blur); backdrop-filter: var(--sheet-blur);
   background: radial-gradient(75% 75% at 0% 0%, var(--sheet-glow), transparent), radial-gradient(60% 60% at 100% 100%, var(--sheet-glow-trailing), transparent), var(--sheet-tint); }
 .aq-macsheet::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: .45;
   box-shadow: inset 0 0 0 1px var(--sheet-rim), inset 1px 1px 0 var(--sheet-rim); }
 .aq-macsheet__head { display: flex; align-items: center; gap: var(--space-8); padding: var(--space-16) var(--space-16) var(--space-12); }
 .aq-macsheet__head h2 { margin: 0; flex: 1; font: 600 26px/31px var(--font-sans); letter-spacing: -0.4px; }
-.aq-macsheet__body { display: flex; flex-direction: column; gap: var(--space-16); padding: var(--space-8) var(--space-16); }
-.aq-macsheet__foot { position: relative; display: flex; justify-content: space-between; align-items: center; padding: var(--space-8) 14px; font: 500 13px/16px var(--font-sans); color: var(--primary); }
-.aq-macsheet__foot span:nth-child(2) { position: absolute; left: 50%; transform: translateX(-50%); color: var(--tertiary); }
+/* Rows touch: separation comes from their own padding. A notice sits first, 16 above the rows. */
+.aq-macsheet__body { display: flex; flex-direction: column; padding: var(--space-8) var(--space-16) var(--space-16); }
+.aq-macsheet__body > .aq-notice { margin-bottom: var(--space-16); }
+.aq-macsheet__foot { position: relative; display: flex; justify-content: space-between; align-items: center; padding: var(--space-8) var(--space-8) 10px;
+  font: 500 13px/16px var(--font-sans); color: var(--primary); }
+.aq-macsheet__time { position: absolute; left: 50%; transform: translateX(-50%); color: var(--tertiary); pointer-events: none; }
+.aq-footbtn { min-height: 32px; padding: 0 10px; border: 0; border-radius: var(--radius-row); background: transparent; color: var(--primary); font: inherit; cursor: pointer;
+  transition: background-color .12s ease-out; }
+.aq-footbtn:hover, .aq-footbtn:focus-visible { background: var(--overview-glass); outline: none; }
+.aq-footbtn:active { background: var(--overview-glass-highlight); }
 
-/* ---------- MacAccountRow ---------- */
-.aq-macrow { display: flex; flex-direction: column; width: 100%; padding: var(--space-16); border: 0; border-radius: var(--radius-mac-card); color: var(--primary); text-align: left; font: inherit; cursor: pointer;
-  background: var(--glass); box-shadow: inset 0 0 0 1px var(--card-edge-mac); transition: background-color .12s ease-out; }
-.aq-macrow:hover, .aq-macrow:focus-visible { background-image: linear-gradient(var(--hover-mac), var(--hover-mac)); outline: none; }
+/* ---------- MacAccountRow (MacAccountCard): clear at rest, the account surface on hover or focus ---------- */
+.aq-macrow { display: flex; flex-direction: column; width: 100%; padding: 21px var(--space-16); border: 0; border-radius: var(--radius-account);
+  background: none; color: var(--primary); text-align: left; font: inherit; cursor: pointer; }
+.aq-macrow:has(> .aq-heat) { padding-bottom: var(--space-8); }
+.aq-macrow::before { opacity: 0; }
+.aq-macrow:hover::before, .aq-macrow:focus-visible::before, .aq-macrow--highlighted::before, .aq-macrow:active::before, .aq-macrow--pressed::before { opacity: 1; }
+.aq-macrow:focus-visible { outline: none; }
 .aq-macrow__top { display: flex; gap: var(--space-20); align-items: flex-start; }
-.aq-macrow__details { display: flex; flex-direction: column; gap: var(--space-8); padding-top: var(--space-2); min-width: 0; }
+.aq-macrow__details { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8); padding-top: var(--space-8); min-width: 0; flex: 1; }
+.aq-macrow__head { display: flex; flex-direction: column; gap: var(--space-4); }
 .aq-macrow__name { margin: 0; font: 600 20px/24px var(--font-sans); letter-spacing: -0.25px; }
-.aq-macrow__plan { margin: var(--space-4) 0 0; font: 600 13px/16px var(--font-sans); }
+.aq-macrow__plan { margin: 0; font: 600 13px/16px var(--font-sans); }
+.aq-macrow__caps { display: flex; flex-direction: column; align-self: stretch; }
 .aq-macrow__cap { margin: 0; font: 400 13px/16px var(--font-sans); font-variant-numeric: tabular-nums; color: var(--reset-accent); }
-.aq-macrow__meta { margin: 0; font: 400 13px/16px var(--font-sans); color: var(--secondary); }
-.aq-macrow__warn { margin: 0; font: 400 13px/16px var(--font-sans); color: var(--warning); }
-@media (prefers-reduced-motion: reduce) { .aq-macrow { transition: none; } }
+/* Status: a fixed 16pt slot after the name, so a state change never adds a line. Empty slot when there is nothing to say. */
+.aq-macrow__title { display: flex; align-items: center; gap: var(--space-8); min-width: 0; }
+.aq-macrow__status { flex: none; width: 16px; height: 16px; color: var(--secondary); background: currentColor;
+  -webkit-mask: var(--aq-status-src) center / 13px no-repeat; mask: var(--aq-status-src) center / 13px no-repeat;
+  --aq-status-src: url("../assets/Glyphs/status-info.svg"); }
+.aq-macrow__status--warning { color: var(--warning); --aq-status-src: url("../assets/Glyphs/status-warning.svg"); }
+.aq-macrow__status--none { visibility: hidden; }
+.aq-macrow__connect { margin-top: var(--space-4); }
+
+/* ---------- iOS widgets (HomeQuotaView, AccountLockView, AccountsLockView): always dark, sized in points as on a 6.1" iPhone ---------- */
+/* Widgets draw from WidgetPalette, not the overview: every colour is a widget-* token, the same in both themes. */
+.aq-widget { --tint: var(--widget-accent); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: var(--space-16); border-radius: 22px; overflow: hidden; background: var(--widget-ground); color: var(--widget-ink); font-family: var(--font-sans); }
+.aq-widget--small { width: 158px; height: 158px; padding: var(--space-12); }
+.aq-widget--medium { width: 338px; height: 158px; }
+.aq-widget--large { width: 338px; height: 354px; justify-content: flex-start; }
+/* Lock Screen: no ground, one ink. The system tints it; previews show it white on black. */
+.aq-widget--lock { padding: 0; border-radius: 0; background: none; }
+.aq-widget--circular { width: 72px; height: 72px; }
+.aq-widget--rect { width: 160px; height: 72px; flex-direction: row; justify-content: flex-start; gap: var(--space-4); }
+
+/* Widget dial (AccountWidgetDial): 270° arcs from a 100 viewBox scaled to --size. Two rings r45/r37, stroke 6.5; one ring r44, stroke 9.7. */
+.aq-wdial { --size: 100px; --glyph: calc(var(--size) * .30); position: relative; flex: none; width: var(--size); height: var(--size); color: var(--tint); }
+.aq-wdial--readings { --glyph: calc(var(--size) * .145); }
+.aq-wdial--warning { --tint: var(--widget-warning); }
+.aq-wdial--critical { --tint: var(--widget-critical); }
+.aq-wdial--muted { --tint: var(--widget-secondary); }
+.aq-wdial svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.aq-wdial__track { fill: none; stroke: var(--widget-track); }
+.aq-wdial__fill { fill: none; stroke: var(--tint); }
+.aq-wdial__ring--2 { opacity: .7; }
+.aq-wdial__body { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--size) * .03); }
+.aq-wdial--readings .aq-wdial__body { transform: translateY(calc(var(--size) * -.035)); }
+.aq-wdial__values { display: flex; flex-direction: column; align-items: center; font: 500 calc(var(--size) * .121) / 1.2 var(--font-sans);
+  font-variant-numeric: tabular-nums; white-space: nowrap; }
+.aq-wdial__values span + span { opacity: .7; }
+/* Circular Lock Screen: the worst reading curves over the top (at most 160°); the glyph drops 4%. Size the text in viewBox units. */
+.aq-wdial--curved { --glyph: calc(var(--size) * .24); }
+.aq-wdial--curved .aq-wdial__body { transform: translateY(calc(var(--size) * .04)); }
+.aq-wdial__caption { fill: currentColor; font-family: var(--font-sans); font-weight: 400; letter-spacing: .08em; }
+/* Status marks drawn as masks: the reconnect triangle replaces the glyph; the clock badges an older reading. */
+.aq-wdial__alert { display: block; width: var(--glyph); height: var(--glyph); background: currentColor;
+  -webkit-mask: url("../assets/Glyphs/status-warning.svg") center / contain no-repeat; mask: url("../assets/Glyphs/status-warning.svg") center / contain no-repeat; }
+.aq-wdial__clock { position: absolute; right: 0; bottom: 0; width: max(9px, calc(var(--size) * .10)); height: max(9px, calc(var(--size) * .10));
+  background: var(--widget-secondary); -webkit-mask: url("../assets/Glyphs/status-clock.svg") center / contain no-repeat; mask: url("../assets/Glyphs/status-clock.svg") center / contain no-repeat; }
+/* Vibrant (Lock Screen): one ink, tracks at 20%, the weekly ring at 60%. */
+.aq-widget--lock .aq-wdial, .aq-widget--lock .aq-wdial--muted { --tint: var(--widget-ink); }
+.aq-widget--lock .aq-wdial__track { stroke: color-mix(in srgb, var(--widget-ink) 20%, transparent); }
+.aq-widget--lock .aq-wdial__ring--2 { opacity: .6; }
+
+/* Tiles: dial, name, status, centred. Names truncate on one line (two in the small Accounts list). */
+.aq-wtile { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 0; text-align: center; }
+.aq-wtile .aq-wdial--readings + .aq-wname { margin-top: -6px; }
+.aq-wtile .aq-wdial:not(.aq-wdial--readings) + .aq-wname { margin-top: var(--space-2); }
+.aq-wname { display: flex; align-items: baseline; justify-content: center; gap: var(--space-2); max-width: 100%; margin: 0; font: 600 11px/13px var(--font-sans); }
+.aq-wname span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.aq-wname--2 span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.aq-wname .aq-wwarn { flex: none; width: 9px; height: 9px; }
+.aq-wstatus { margin: 0; font: 400 10px/12px var(--font-sans); color: var(--widget-reset); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.aq-wwarn { display: inline-block; background: currentColor; -webkit-mask: url("../assets/Glyphs/status-warning.svg") center / contain no-repeat; mask: url("../assets/Glyphs/status-warning.svg") center / contain no-repeat; }
+
+/* Layouts */
+.aq-wlist { display: flex; flex-direction: column; gap: var(--space-12); width: 100%; }
+.aq-wrow { display: flex; align-items: center; gap: var(--space-8); min-width: 0; }
+.aq-wrow__text { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; flex: 1; }
+.aq-wrow .aq-wname { justify-content: flex-start; text-align: left; }
+.aq-wstrip { display: flex; align-items: flex-start; gap: 14px; width: 100%; }
+.aq-wstrip > .aq-wtile { flex: 1; }
+.aq-wgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); width: 100%; }
+.aq-wsummary { display: flex; align-items: center; gap: var(--space-16); width: 100%; }
+.aq-wdetails { display: flex; flex-direction: column; gap: var(--space-8); flex: 1; min-width: 0; }
+.aq-wdetails__head { display: flex; flex-direction: column; gap: var(--space-4); }
+.aq-wdetails__service { margin: 0; font: 600 17px/22px var(--font-sans); }
+.aq-wdetails__plan { margin: 0; font: 600 12px/16px var(--font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aq-wdetails__caps { padding-top: var(--space-4); font: 400 12px/16px var(--font-sans); font-variant-numeric: tabular-nums; color: var(--widget-reset); }
+.aq-wdetails__caps p { margin: 0; white-space: nowrap; }
+.aq-wlarge { display: flex; flex-direction: column; gap: var(--space-16); width: 100%; }
+
+/* Widget heatmap (WidgetTokenHeatmap): 27 weeks of 4pt cells on medium, 36 of 6.5pt on large, 2pt gaps, no labels. */
+.aq-wheat { --cell: 4px; display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, var(--cell)); grid-auto-columns: var(--cell); gap: 2px; }
+.aq-wheat--large { --cell: 6.5px; }
+.aq-wheat i { border-radius: 1px; background: var(--widget-heat-none); }
+.aq-wheat i.z { background: var(--widget-heat-0); } .aq-wheat i.l1 { background: var(--widget-heat-1); } .aq-wheat i.l2 { background: var(--widget-heat-2); }
+.aq-wheat i.l3 { background: var(--widget-heat-3); } .aq-wheat i.l4 { background: var(--widget-heat-4); } .aq-wheat i.f { background: transparent; }
+
+/* Weekly split (WidgetWeeklySplitView), large Account only: 8pt bar, up to three parts, heat-4 / heat-3 / heat-2. */
+.aq-wsplit { display: flex; flex-direction: column; gap: var(--space-4); }
+.aq-wsplit__title { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin: 0; font: 600 12px/16px var(--font-sans); }
+.aq-wsplit__title small { font: 400 9px/12px var(--font-sans); color: var(--widget-secondary); }
+.aq-wsplit__bar { display: flex; gap: 2px; height: 8px; }
+.aq-wsplit__bar i { border-radius: 1px; }
+.aq-wsplit__legend { display: flex; gap: var(--space-8); margin: 0; font: 400 10px/12px var(--font-sans); }
+.aq-wsplit__legend span { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+.aq-wsplit__legend span::before { content: ""; width: 6px; height: 6px; background: var(--c); }
+.aq-wsplit .p1 { --c: var(--widget-heat-4); } .aq-wsplit .p2 { --c: var(--widget-heat-3); } .aq-wsplit .p3 { --c: var(--widget-heat-2); }
+.aq-wsplit__bar i { background: var(--c); }
+
+/* Lock rectangular text (AccountLockView): 14pt medium, second line at 60%, lifted 5pt. Accounts: two columns, 11pt names. */
+.aq-wlock__text { display: flex; flex-direction: column; min-width: 0; flex: 1; transform: translateY(-5px); font: 500 14px/17px var(--font-sans); font-variant-numeric: tabular-nums; }
+.aq-wlock__text p { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aq-wlock__text p:first-child { font-weight: 600; }
+.aq-wlock__text p + p + p, .aq-wlock__text .aq-wdim { opacity: .6; }
+.aq-wlock__pair { display: flex; width: 100%; }
+.aq-wlock__pair > div { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.aq-wlock__pair .aq-wname { font-weight: 500; }
+.aq-wlock__pair .aq-wname .aq-wwarn { width: 8px; height: 8px; }
