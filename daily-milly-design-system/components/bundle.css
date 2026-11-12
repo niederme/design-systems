@@ -14,6 +14,12 @@
 .dm-body{font-size:var(--body-size);line-height:var(--body-leading);color:var(--text);max-width:var(--measure)}
 .dm-meta{font-size:var(--meta-size);line-height:var(--meta-leading);color:var(--muted)}
 
+/* Name: a child's name over their page */
+.dm-column .heading.dm-name,.heading.dm-name{font-size:var(--name-size)}
+/* Status pill */
+.dm-status{display:inline-block;font-size:var(--status-size);line-height:var(--status-leading);font-weight:var(--status-weight);padding:1px 10px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.dm-status.is-missing{background:var(--red);color:#fff}
+
 /* Children */
 [data-child="1"]{--child-accent:var(--child-1)}
 [data-child="2"]{--child-accent:var(--child-2)}
@@ -31,4 +37,4 @@
 .dm-item .dm-source{margin-top:10px}
 .dm-item .dm-source a{color:inherit;text-underline-offset:3px}
 
-@media(max-width:800px){:root{--heading-size:21px;--title-size:26px;--brand-size:20px;--item-title-size:18px;--body-size:15px}}
+@media(max-width:800px){:root{--heading-size:21px;--name-size:36px;--title-size:26px;--brand-size:20px;--item-title-size:18px;--body-size:15px}}

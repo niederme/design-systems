@@ -1,6 +1,6 @@
 The Daily Milly design system: the family's school newsletter, as a website (milly.nieder.me) and a 4 PM email. Both should read like one calm printed page: white paper, one rounded system font, a house green, and one colour per child. Hierarchy comes from colour and weight, never from shrinking type.
 
-Taken from the live site at niederme/daily-milly main@579294c (2026-11-12). Names in the previews are made up; this repo is public, so no real family or school data goes here.
+Taken from the live site at niederme/daily-milly main@579294c (2026-11-12). Names in the previews are made up; this repo is public, so no real family or school data goes here. The working copy is the Claude design system artifact.
 
 ## Principles
 
@@ -25,8 +25,10 @@ One family: `ui-rounded`, then the system sans.
 
 - `brand`: The Daily Milly, green, 800.
 - `title`: the day at the top of the page.
-- `heading`: the big name over a column (school, child, home, calendar), under a 5px rule in the same colour. Leading 1.1. **Live as `.heading` on the site.**
+- `name`: a child's name over their page, 44px (36 on a phone), the biggest type on the page.
+- `heading`: the big name over a column (school, home, calendar), 28px (21 on a phone), under a 5px rule in the same colour. Leading 1.1. **Live as `.heading` on the site.**
 - `label`: a group inside a column or panel (*Today*, *To do*). Same weight as a heading, smaller only because it's a different role, coloured green or the child's colour.
+- `status`: a 15px pill for a portal's word (Missing, Assigned).
 - `item-title`, `body`, `meta`: an item's title, its note, its date and source.
 - `brief`: the sentence or two that opens the Family and child pages.
 
@@ -43,9 +45,16 @@ The email can only use inline styles. `milly/src/design.ts` holds the same token
 
 ## Open
 
-- Heading sizes still differ by page: school 28 / 21 (desktop / phone), child 24 / 29, calendar 28 / 25. Next step: one size per width.
 - The email's muted is #7a8089 and its headings are 28 / 34 at 800; the site's are #7a8080 and 1.1 at 750.
 
-## Not synced
+## Iconography & logo
 
-Copied by hand from `milly/public/dashboard.css` and `milly/src/design.ts`. `tokens.css` is generated from `tokens.json`. Components are static HTML previews styled by `components/bundle.css`.
+The logo is Milly the dog (`assets/Logos/daily-milly-dog.png`) beside *The Daily Milly* set in `brand`: 40px beside 24px type on the site, 84px in the email header. Interface icons are simple line icons in `currentColor`, drawn at 16–18px with a 1.8 stroke, in green or the child's colour. No emoji.
+
+## Voice
+
+Plain, short, parent to parent. *Nothing has been checked yet today.* *Prepare for tomorrow.* Sentence case, no exclamation marks.
+
+## Source
+
+Copied by hand from `milly/public/dashboard.css` and `milly/src/design.ts`. Components are static HTML previews styled by `components/bundle.css`.

@@ -25,6 +25,10 @@
   --title-leading: 1.2;
   --title-weight: 750;
   --title-tracking: -0.7px;
+  --name-size: 44px;
+  --name-leading: 1.1;
+  --name-weight: 750;
+  --name-tracking: -0.025em;
   --heading-size: 28px;
   --heading-leading: 1.1;
   --heading-weight: 750;
@@ -49,6 +53,10 @@
   --meta-leading: 1.5;
   --meta-weight: 400;
   --meta-tracking: 0;
+  --status-size: 15px;
+  --status-leading: 1.5;
+  --status-weight: 650;
+  --status-tracking: 0;
   --rule-heavy: 5px;
   --rule-gap: 14px;
   --item-gap: 20px;

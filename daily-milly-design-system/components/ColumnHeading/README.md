@@ -4,6 +4,7 @@ The big name over a column: a school, a child, the home, the 30-day calendar. A 
 
 **Use**
 - `.heading` on the `h2` or `h3`, inside a container with the 5px rule (`.dm-column` here; `.shared-feed` and `.child-header` on the site).
+- A child's name takes the larger `name` size (`.dm-name`; on the site `.child-header .heading`): 44px, 36px on a phone. Schools, home and calendar stay at `heading`: 28px, 21px.
 - Colour follows the child (`--child-accent`), otherwise green. The rule matches the name.
 
 **Rules**
