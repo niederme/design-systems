@@ -1,0 +1,40 @@
+/* Daily Milly components. `.heading` is the live site's class (milly/public/dashboard.css); the dm-* roles document
+   styles the site still sets per selector, and become classes as pages move onto the system. */
+*{box-sizing:border-box}
+.dm-root{margin:0;background:var(--paper);color:var(--ink);font:var(--body-size)/var(--body-leading) var(--font-sans)}
+.dm-root h1,.dm-root h2,.dm-root h3,.dm-root h4,.dm-root p{margin:0}
+
+/* Roles */
+.dm-brand{font-size:var(--brand-size);line-height:var(--brand-leading);font-weight:var(--brand-weight);letter-spacing:var(--brand-tracking);color:var(--green)}
+.dm-title{font-size:var(--title-size);line-height:var(--title-leading);font-weight:var(--title-weight);letter-spacing:var(--title-tracking);color:var(--ink)}
+.heading{font-size:var(--heading-size);line-height:var(--heading-leading);font-weight:var(--heading-weight);letter-spacing:var(--heading-tracking);color:var(--child-accent,var(--green));text-wrap:balance}
+.dm-label{font-size:var(--label-size);line-height:var(--label-leading);font-weight:var(--label-weight);color:var(--child-accent,var(--green))}
+.dm-item-title{font-size:var(--item-title-size);line-height:var(--item-title-leading);font-weight:var(--item-title-weight);letter-spacing:var(--item-title-tracking);color:var(--ink);text-wrap:pretty}
+.dm-brief{font-size:var(--brief-size);line-height:var(--brief-leading);color:var(--ink);max-width:var(--measure)}
+.dm-body{font-size:var(--body-size);line-height:var(--body-leading);color:var(--text);max-width:var(--measure)}
+.dm-meta{font-size:var(--meta-size);line-height:var(--meta-leading);color:var(--muted)}
+
+/* Name: a child's name over their page */
+.dm-column .heading.dm-name,.heading.dm-name{font-size:var(--name-size)}
+/* Status pill */
+.dm-status{display:inline-block;font-size:var(--status-size);line-height:var(--status-leading);font-weight:var(--status-weight);padding:1px 10px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.dm-status.is-missing{background:var(--red);color:#fff}
+
+/* Children */
+[data-child="1"]{--child-accent:var(--child-1)}
+[data-child="2"]{--child-accent:var(--child-2)}
+[data-child="3"]{--child-accent:var(--child-3)}
+
+/* ColumnHeading: the heavy rule and the name, one block */
+.dm-column{border-top:var(--rule-heavy) solid var(--child-accent,var(--green));padding-top:var(--rule-gap)}
+.dm-column>.heading{margin-bottom:6px}
+
+/* NewsItem: date, title, note, source */
+.dm-item{padding:var(--item-gap) 0 16px}
+.dm-item+.dm-item{border-top:1px solid var(--hairline)}
+.dm-item .dm-meta:first-child{margin-bottom:4px}
+.dm-item .dm-body{margin-top:8px}
+.dm-item .dm-source{margin-top:10px}
+.dm-item .dm-source a{color:inherit;text-underline-offset:3px}
+
+@media(max-width:800px){:root{--heading-size:21px;--name-size:36px;--title-size:26px;--brand-size:20px;--item-title-size:18px;--body-size:15px}}
